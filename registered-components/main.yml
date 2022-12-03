@@ -15,7 +15,7 @@ jobs:
   fill_dates:
     type: command
     compute: azureml:cpu-cluster
-    component: file:./densedate.yml
+    component: azureml:dense_dates@latest
     inputs:
       data: 
         type: uri_file
@@ -28,7 +28,7 @@ jobs:
   lag_df:
     type: command
     compute: azureml:cpu-cluster
-    component: file:./lagger.yml
+    component: azureml:lagging@latest
     inputs:
       data: 
         path: ${{parent.jobs.fill_dates.outputs.test_data}}
@@ -40,7 +40,7 @@ jobs:
   train_step:
     type: command
     compute: azureml:cpu-cluster
-    component: file:./train.yml
+    component: file:./train-src/train.yml
     inputs:
       data: 
         path: ${{parent.jobs.lag_df.outputs.test_data}}
